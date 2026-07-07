@@ -1,5 +1,7 @@
 # MLOps Pipeline for Wine Classification
 
+[![CI](https://github.com/anycodef/mlops-wine-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/anycodef/mlops-wine-classifier/actions/workflows/ci.yml)
+
 An end-to-end MLOps project that takes a classification model through the full
 lifecycle — **prepare → train → evaluate → register → serve → monitor** — using
 a stack where each tool owns a single responsibility and hands off cleanly to
@@ -102,6 +104,9 @@ flowchart TD
 ---
 
 ## Quickstart (local)
+
+> Common tasks are wrapped in a `Makefile` — run `make help` to list them
+> (`make setup`, `make repro`, `make ui`, `make register`, `make serve`, ...).
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
