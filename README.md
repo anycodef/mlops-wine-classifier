@@ -161,8 +161,15 @@ The best run (by `train.selection_metric` in `params.yaml`) is registered as
 FastAPI loads the champion model once at startup and exposes it:
 
 ```bash
-uvicorn api.main:app --reload        # http://localhost:8000/docs
+uvicorn api.main:app --reload        # http://localhost:8000/
 ```
+
+- `GET /` — a single-page web UI to enter (or load a preset) wine sample, get the
+  predicted class with class probabilities, and see a **local SHAP explanation**
+  of that specific prediction, alongside the global SHAP summary.
+- `GET /docs` — interactive OpenAPI docs.
+- `POST /predict` — batch class predictions.
+- `POST /explain` — prediction plus per-feature SHAP attributions for one sample.
 
 ```bash
 curl -X POST http://localhost:8000/predict \
