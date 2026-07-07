@@ -1,7 +1,8 @@
-# Slim runtime for the serving container (no training / DVC / SHAP).
+# Runtime for the serving container (serves predictions + local SHAP explanations).
 mlflow>=3.0
 scikit-learn>=1.5
 pandas>=2.2
+shap>=0.46
 fastapi>=0.115
 uvicorn[standard]>=0.30
 pydantic>=2.7

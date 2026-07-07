@@ -55,10 +55,27 @@ class WineSample(BaseModel):
         return dict(zip(CANONICAL_COLUMNS, values))
 
 
+# Python-safe field names, in the same order as CANONICAL_COLUMNS.
+SAFE_FIELDS: List[str] = list(WineSample.model_fields.keys())
+
+
 class PredictRequest(BaseModel):
     samples: List[WineSample]
 
 
 class PredictResponse(BaseModel):
     predictions: List[int]
+    model_alias: str
+
+
+class FeatureContribution(BaseModel):
+    feature: str
+    value: float
+    shap: float
+
+
+class ExplainResponse(BaseModel):
+    prediction: int
+    probabilities: List[float]
+    contributions: List[FeatureContribution]
     model_alias: str
