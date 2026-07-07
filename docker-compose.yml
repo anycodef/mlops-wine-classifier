@@ -29,6 +29,9 @@ services:
       MLFLOW_TRACKING_URI: http://mlflow:5000
     ports:
       - "8000:8000"
+    volumes:
+      # Expose pipeline-generated images (global SHAP, confusion matrix) to the UI.
+      - ./reports:/app/reports:ro
     depends_on:
       - mlflow
 
