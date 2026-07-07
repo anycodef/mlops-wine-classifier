@@ -1,0 +1,35 @@
+# Production-like local deployment:
+#   - mlflow: tracking server + model registry, artifacts served over HTTP
+#     (--serve-artifacts) so the API never depends on local file paths.
+#   - api:    FastAPI service that loads models:/wine_classifier@champion.
+#
+# Usage:
+#   docker compose up -d mlflow
+#   MLFLOW_TRACKING_URI=http://localhost:5000 dvc repro
+#   MLFLOW_TRACKING_URI=http://localhost:5000 python -m src.register_model
+#   docker compose up -d api            # then GET http://localhost:8000/health
+services:
+  mlflow:
+    build: .
+    command: >
+      mlflow server
+      --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --artifacts-destination /mlflow/mlartifacts
+      --serve-artifacts
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlflow
+
+  api:
+    build: .
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mlflow
+
+volumes:
+  mlflow-data:
