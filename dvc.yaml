@@ -1,0 +1,44 @@
+# Reproducible ML pipeline. Run the whole thing with `dvc repro`.
+# DVC re-executes only the stages whose dependencies (code / params / data)
+# changed, in dependency order.
+stages:
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+      - src/prepare.py
+      - src/config.py
+    params:
+      - data.test_size
+      - data.random_state
+    outs:
+      - data/processed
+
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/data.py
+      - src/config.py
+      - data/processed
+    params:
+      - train.selection_metric
+    outs:
+      - artifacts/best_run.json:
+          cache: false
+
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+      - src/evaluate.py
+      - src/data.py
+      - artifacts/best_run.json
+    params:
+      - evaluate.shap_sample_size
+    metrics:
+      - reports/metrics.json:
+          cache: false
+    plots:
+      - reports/confusion_matrix.png:
+          cache: false
+      - reports/shap_summary.png:
+          cache: false

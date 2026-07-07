@@ -1,0 +1,82 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m src.prepare
+    deps:
+    - path: src/config.py
+      hash: md5
+      md5: 9eda2529aa49afc931fda758aeb6f890
+      size: 1590
+    - path: src/prepare.py
+      hash: md5
+      md5: 72ad4fe1bdcd1a9449ece029f1e30d8e
+      size: 1161
+    params:
+      params.yaml:
+        data.random_state: 42
+        data.test_size: 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: e8f0ee81d8a6bd1606df171f888d6b1d.dir
+      size: 12438
+      nfiles: 2
+  train:
+    cmd: python -m src.train
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: e8f0ee81d8a6bd1606df171f888d6b1d.dir
+      size: 12438
+      nfiles: 2
+    - path: src/config.py
+      hash: md5
+      md5: 9eda2529aa49afc931fda758aeb6f890
+      size: 1590
+    - path: src/data.py
+      hash: md5
+      md5: 15ad185d1d3e7cd090f586b67538335a
+      size: 396
+    - path: src/train.py
+      hash: md5
+      md5: dc71230e9feeeebdc1d30711f378d205
+      size: 3430
+    params:
+      params.yaml:
+        train.selection_metric: f1_macro
+    outs:
+    - path: artifacts/best_run.json
+      hash: md5
+      md5: 70c5d0d2bdc851fe6ba7267a74b00539
+      size: 111
+  evaluate:
+    cmd: python -m src.evaluate
+    deps:
+    - path: artifacts/best_run.json
+      hash: md5
+      md5: 70c5d0d2bdc851fe6ba7267a74b00539
+      size: 111
+    - path: src/data.py
+      hash: md5
+      md5: 15ad185d1d3e7cd090f586b67538335a
+      size: 396
+    - path: src/evaluate.py
+      hash: md5
+      md5: 7eac4cd6644686832866a3f12be0963b
+      size: 2802
+    params:
+      params.yaml:
+        evaluate.shap_sample_size: 30
+    outs:
+    - path: reports/confusion_matrix.png
+      hash: md5
+      md5: f1f0f89d7a92ae0b742af8f5f2587cea
+      size: 18436
+    - path: reports/metrics.json
+      hash: md5
+      md5: 26bc3731f75b90efa62484bce4f569a1
+      size: 121
+    - path: reports/shap_summary.png
+      hash: md5
+      md5: a0da1a877ac5f30bb8d9502b13789b76
+      size: 84761
