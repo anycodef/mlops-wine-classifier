@@ -1,0 +1,20 @@
+# Single source of truth for pipeline parameters.
+# Consumed by the DVC pipeline (dvc.yaml) and the training scripts.
+
+data:
+  test_size: 0.2
+  random_state: 42
+
+train:
+  # Metric used to select the best run for promotion.
+  selection_metric: f1_macro
+
+evaluate:
+  # Number of test samples explained with SHAP.
+  shap_sample_size: 30
+
+monitor:
+  # Accuracy floor below which a retraining pipeline should be triggered.
+  retrain_threshold: 0.85
+  horizon_days: 30
+  random_state: 42

@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# MLflow local backend & artifact store
+mlflow.db
+mlruns/
+mlartifacts/
+
+# DVC-managed pipeline outputs (tracked by DVC, not Git)
+/data/
+/reports/
+/artifacts/
+
+# Local scratch / reference material (not part of the project)
+*.pdf
+*.png
+idea

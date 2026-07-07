@@ -1,0 +1,7 @@
+# Slim runtime for the serving container (no training / DVC / SHAP).
+mlflow>=3.0
+scikit-learn>=1.5
+pandas>=2.2
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
