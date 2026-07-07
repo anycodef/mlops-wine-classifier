@@ -36,3 +36,17 @@ def test_predict_with_stub_model():
 
 def test_winesample_validates():
     assert WineSample(**SAMPLE).proline == 1065
+
+
+def test_index_serves_html():
+    with TestClient(main.app) as client:
+        resp = client.get("/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers["content-type"]
+
+
+def test_example_returns_all_features():
+    with TestClient(main.app) as client:
+        resp = client.get("/example/0")
+    assert resp.status_code == 200
+    assert len(resp.json()) == 13
